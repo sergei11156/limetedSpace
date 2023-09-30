@@ -10,45 +10,38 @@ func _ready():
 	
 	var verticePerUnits = 50
 	
-	var leftSide = []
+	var leftSide: Array[Vertice] = []
 	var leftSideX = -screen_size.x/2
 	for y in range(screen_size.y/2, -screen_size.y/2, -verticePerUnits):
-		leftSide.push_back(Vector2(leftSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
+		var vertice = Vertice.new(Vector2(leftSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
+		leftSide.push_back(vertice)
 	
-	var topSide = []
+	var topSide: Array[Vertice] = []
 	var topSideY = -screen_size.y/2
 	for x in range(-screen_size.x/2, screen_size.x/2, verticePerUnits):
-		topSide.push_back(Vector2(x, topSideY + (randi() % verticePerUnits - verticePerUnits/2)))
+		var vertice = Vertice.new(Vector2(x, topSideY + (randi() % verticePerUnits - verticePerUnits/2)))
+		topSide.push_back(vertice)
 		
-	var rightSide = []
+	var rightSide: Array[Vertice] = []
 	var rightSideX = screen_size.x/2
 	for y in range(-screen_size.y/2, screen_size.y/2, verticePerUnits):
-		rightSide.push_back(Vector2(rightSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
+		var vertice = Vertice.new(Vector2(rightSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
+		rightSide.push_back(vertice)
 	
-	var bottomSide = []
+	var bottomSide: Array[Vertice] = []
 	var bottomSideY = screen_size.y/2
 	for x in range(screen_size.x/2, -screen_size.x/2, -verticePerUnits):
-		bottomSide.push_back(Vector2(x, bottomSideY + (randi() % verticePerUnits - verticePerUnits/2)))
+		var vertice = Vertice.new(Vector2(x, bottomSideY + (randi() % verticePerUnits - verticePerUnits/2)))		
+		bottomSide.push_back(vertice)
 	
-	var allSides = leftSide + topSide + rightSide + bottomSide
-	
-	poly.set_polygon(PackedVector2Array(allSides))
-								
-								
+	var allSidesVertice: Array[Vertice] = leftSide + topSide + rightSide + bottomSide
 	
 	
-	var offset = 50;
-	
-	var vertice = Vertice.new(Vector2(-1152/2 + offset, 648/2 - offset))
-	var vPos = vertice.getPosition()
-	
-	
+	poly.set_polygon(PackedVector2Array(allSidesVertice.map(func(v): return v.getPosition())))
 	
 	
 	add_child(poly)
 	poly.set_position(Vector2(0, 0))
-	#scale = scale / 2	
-
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
