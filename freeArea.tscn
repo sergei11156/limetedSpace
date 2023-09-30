@@ -5,3 +5,5 @@
 [node name="FreeArea" type="Node2D"]
 script = ExtResource("1_3fs1y")
 metadata/_edit_lock_ = true
+
+[node name="Polygon2D" type="Polygon2D" parent="."]

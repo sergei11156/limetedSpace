@@ -1,49 +1,46 @@
 extends Node2D
 
-var poly;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	poly = Polygon2D.new()
 	var screen_size = get_viewport_rect().size
 	position = screen_size /2
 	
-	var verticePerUnits = 50
+	var verticePerUnits = 20
 	
-	var leftSide: Array[Vertice] = []
+	var leftSide: Array[Vector2] = []
 	var leftSideX = -screen_size.x/2
 	for y in range(screen_size.y/2, -screen_size.y/2, -verticePerUnits):
-		var vertice = Vertice.new(Vector2(leftSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
-		leftSide.push_back(vertice)
+		leftSide.push_back(Vector2(leftSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
 	
-	var topSide: Array[Vertice] = []
+	var topSide: Array[Vector2] = []
 	var topSideY = -screen_size.y/2
 	for x in range(-screen_size.x/2, screen_size.x/2, verticePerUnits):
-		var vertice = Vertice.new(Vector2(x, topSideY + (randi() % verticePerUnits - verticePerUnits/2)))
-		topSide.push_back(vertice)
+		topSide.push_back(Vector2(x, topSideY + (randi() % verticePerUnits - verticePerUnits/2)))
 		
-	var rightSide: Array[Vertice] = []
+	var rightSide: Array[Vector2] = []
 	var rightSideX = screen_size.x/2
 	for y in range(-screen_size.y/2, screen_size.y/2, verticePerUnits):
-		var vertice = Vertice.new(Vector2(rightSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
-		rightSide.push_back(vertice)
+		rightSide.push_back(Vector2(rightSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
 	
-	var bottomSide: Array[Vertice] = []
+	var bottomSide: Array[Vector2] = []
 	var bottomSideY = screen_size.y/2
 	for x in range(screen_size.x/2, -screen_size.x/2, -verticePerUnits):
-		var vertice = Vertice.new(Vector2(x, bottomSideY + (randi() % verticePerUnits - verticePerUnits/2)))		
-		bottomSide.push_back(vertice)
+		bottomSide.push_back(Vector2(x, bottomSideY + (randi() % verticePerUnits - verticePerUnits/2)))
 	
-	var allSidesVertice: Array[Vertice] = leftSide + topSide + rightSide + bottomSide
-	
-	
-	poly.set_polygon(PackedVector2Array(allSidesVertice.map(func(v): return v.getPosition())))
+	var allSidesVertice = leftSide + topSide + rightSide + bottomSide
 	
 	
-	add_child(poly)
-	poly.set_position(Vector2(0, 0))
+	$Polygon2D.set_polygon(PackedVector2Array(allSidesVertice))
+	$Polygon2D.set_position(Vector2(0, 0))
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	var poligon = $Polygon2D.get_polygon();
+	for i in poligon.size():
+		var deltaPosition = -poligon[i].normalized() * poligon[i].length() * 0.05 * delta;
+		poligon.set(i, poligon[i] + deltaPosition);
+	
+	$Polygon2D.set_polygon(poligon)
+	
