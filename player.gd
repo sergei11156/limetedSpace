@@ -16,34 +16,3 @@ func _physics_process(delta):
 	velocity = (direction * speed)
 	move_and_slide()
 	look_at(mouse_position)
-
-func _on_area_entered(area):
-	pass # Replace with function body.
-
-
-func _on_area_exited(area):
-	pass # Replace with function body.
-
-
-func _on_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
-	pass # Replace with function body.
-
-
-func _on_body_entered(body):
-	pass # Replace with function body.
-
-
-func _on_body_exited(body):
-	pass # Replace with function body.
-
-
-func _on_area_shape_exited(area_rid, area, area_shape_index, local_shape_index):
-	pass # Replace with function body.
-
-
-func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	pass # Replace with function body.
-
-
-func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
-	pass # Replace with function body.

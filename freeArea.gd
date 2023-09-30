@@ -2,7 +2,9 @@ extends Node2D
 
 var screen_size
 var radius
-var vertices: Array[Vector2]
+var vertices
+var slices
+var collisionSlices
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,18 +19,22 @@ func _ready():
 	
 	for step in range(verticesCount):
 		var verticePos = Vector2.from_angle(PI * 2 / verticesCount * step)
-		var rnd1to100 = randi() % 100
-		verticePos *= radius + rnd1to100
-		print(step, verticePos)
+		verticePos *= radius
 		vertices.push_back(verticePos)
 	
-	var slices = [$PolygonSliece1, $PolygonSliece2, $PolygonSliece3, $PolygonSliece4]
-	var collisionSlices = [$PolygonSliece1, $PolygonSliece2, $PolygonSliece3, $PolygonSliece4]
 	
-	drawVertices(vertices, slices)
-	drawVertices(vertices, collisionSlices)
-	
+	slices = [$PolygonSliece1, $PolygonSliece2, $PolygonSliece3, $PolygonSliece4]
+	collisionSlices = [$Area2D/CollisionSliece1, $Area2D/CollisionSliece2, $Area2D/CollisionSliece3, $Area2D/CollisionSliece4]
+	#print(vertices)
 
+	var randVertices = vertices.map(rand)
+	
+	drawVertices(randVertices, slices)
+	drawVertices(randVertices, collisionSlices)
+	
+func rand(v):
+	return v * ((randi() % 10 - 5) / 500.0 + 1)
+	
 func drawVertices(vertices: Array, slices: Array, ):
 	var verticesInSlice = vertices.size()/slices.size()
 	var polygonVertices = []
@@ -46,16 +52,16 @@ func drawVertices(vertices: Array, slices: Array, ):
 				slices[i / verticesInSlice - 1].set_polygon(PackedVector2Array(polygonVertices))
 				polygonVertices = []
 				polygonVertices.push_back(vertice.normalized() * radius * 4) # первая точка в слайсе
-				print(vertice.normalized() * radius * 4, "first vertice, slice:", i / verticesInSlice - 1)
 			else:
 				polygonVertices.push_back(vertice.normalized() * radius * 4) # первая точка в слайсе
-				print(vertice.normalized() * radius * 4, "first vertice, slice:", i / verticesInSlice - 1)
 		
 		polygonVertices.push_back(Vector2(vertice))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	var randVertices = vertices.map(rand)
+	drawVertices(randVertices, slices)
+	drawVertices(randVertices, collisionSlices)
 	#var poligon = $Polygon2D.get_polygon();
 	#for i in poligon.size():
 	#	var deltaPosition = -poligon[i].normalized() * poligon[i].length() * 0.05 * delta;
@@ -73,4 +79,17 @@ func _on_area_2d_area_entered(area):
 
 
 func _on_area_2d_area_shape_exited(area_rid, area, area_shape_index, local_shape_index):
+	pass # Replace with function body.
+
+
+func _on_area_2d_body_entered(body):
+	print(body)
+	pass # Replace with function body.
+
+
+func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	pass # Replace with function body.
+
+
+func _on_area_2d_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	pass # Replace with function body.
