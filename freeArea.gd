@@ -1,50 +1,68 @@
 extends Node2D
 
+var screen_size
+var radius
+var vertices: Array[Vector2]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var screen_size = get_viewport_rect().size
+	screen_size = get_viewport_rect().size
+	radius = (screen_size.x if screen_size.x > screen_size.y else screen_size.y) / 2 
+	
 	position = screen_size /2
 	
-	var verticePerUnits = 20
+	var verticesCount = 144
+	var randomOffset = 0.05 * radius
+	vertices = []
 	
-	var leftSide: Array[Vector2] = []
-	var leftSideX = -screen_size.x/2
-	for y in range(screen_size.y/2, -screen_size.y/2, -verticePerUnits):
-		leftSide.push_back(Vector2(leftSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
+	for step in range(verticesCount):
+		var verticePos = Vector2.from_angle(PI * 2 / verticesCount * step)
+		var rnd1to100 = randi() % 100
+		verticePos *= radius + rnd1to100
+		print(step, verticePos)
+		vertices.push_back(verticePos)
 	
-	var topSide: Array[Vector2] = []
-	var topSideY = -screen_size.y/2
-	for x in range(-screen_size.x/2, screen_size.x/2, verticePerUnits):
-		topSide.push_back(Vector2(x, topSideY + (randi() % verticePerUnits - verticePerUnits/2)))
+	var slices = [$PolygonSliece1, $PolygonSliece2, $PolygonSliece3, $PolygonSliece4]
+	var collisionSlices = [$PolygonSliece1, $PolygonSliece2, $PolygonSliece3, $PolygonSliece4]
+	
+	drawVertices(vertices, slices)
+	drawVertices(vertices, collisionSlices)
+	
+
+func drawVertices(vertices: Array, slices: Array, ):
+	var verticesInSlice = vertices.size()/slices.size()
+	var polygonVertices = []
+	for i in vertices.size() + 1:
+		var vertice: Vector2
+		if vertices.size() < i:
+			vertice = vertices[i]
+		else:
+			vertice = vertices[i-1]
+		if i % verticesInSlice == 0:
+			if polygonVertices.size() > 0:
+				#Если это последний слайс то
+				polygonVertices.push_back(Vector2(vertice))
+				polygonVertices.push_back(vertice.normalized() * radius * 4) # последняя точка в слайсе
+				slices[i / verticesInSlice - 1].set_polygon(PackedVector2Array(polygonVertices))
+				polygonVertices = []
+				polygonVertices.push_back(vertice.normalized() * radius * 4) # первая точка в слайсе
+				print(vertice.normalized() * radius * 4, "first vertice, slice:", i / verticesInSlice - 1)
+			else:
+				polygonVertices.push_back(vertice.normalized() * radius * 4) # первая точка в слайсе
+				print(vertice.normalized() * radius * 4, "first vertice, slice:", i / verticesInSlice - 1)
 		
-	var rightSide: Array[Vector2] = []
-	var rightSideX = screen_size.x/2
-	for y in range(-screen_size.y/2, screen_size.y/2, verticePerUnits):
-		rightSide.push_back(Vector2(rightSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
-	
-	var bottomSide: Array[Vector2] = []
-	var bottomSideY = screen_size.y/2
-	for x in range(screen_size.x/2, -screen_size.x/2, -verticePerUnits):
-		bottomSide.push_back(Vector2(x, bottomSideY + (randi() % verticePerUnits - verticePerUnits/2)))
-	
-	var allSidesVertice = leftSide + topSide + rightSide + bottomSide
-	
-	
-	$Polygon2D.set_polygon(PackedVector2Array(allSidesVertice))
-	$Polygon2D.set_position(Vector2(0, 0))
-	$Area2D/CollisionPolygon2D.set_position(Vector2(0, 0))
-	
+		polygonVertices.push_back(Vector2(vertice))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var poligon = $Polygon2D.get_polygon();
-	for i in poligon.size():
-		var deltaPosition = -poligon[i].normalized() * poligon[i].length() * 0.05 * delta;
-		poligon.set(i, poligon[i] + deltaPosition);
+	pass
+	#var poligon = $Polygon2D.get_polygon();
+	#for i in poligon.size():
+	#	var deltaPosition = -poligon[i].normalized() * poligon[i].length() * 0.05 * delta;
+	#	poligon.set(i, poligon[i] + deltaPosition * (1 + (randi() % 10)/100));
 	
-	$Polygon2D.set_polygon(poligon)
-	$Area2D/CollisionPolygon2D.set_polygon(poligon)
+	#$Polygon2D.set_polygon(poligon)
+	#$Area2D/CollisionPolygon2D.set_polygon(poligon)
 	
 
 

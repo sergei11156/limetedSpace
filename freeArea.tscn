@@ -6,12 +6,27 @@
 script = ExtResource("1_3fs1y")
 metadata/_edit_lock_ = true
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="PolygonSliece1" type="Polygon2D" parent="."]
+color = Color(0, 0, 0, 1)
 
 [node name="Area2D" type="Area2D" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+[node name="CollisionSliece1" type="CollisionPolygon2D" parent="Area2D"]
+
+[node name="CollisionSliece2" type="CollisionPolygon2D" parent="Area2D"]
+
+[node name="CollisionSliece3" type="CollisionPolygon2D" parent="Area2D"]
+
+[node name="CollisionSliece4" type="CollisionPolygon2D" parent="Area2D"]
+
+[node name="PolygonSliece2" type="Polygon2D" parent="."]
+color = Color(0, 0, 0, 1)
+
+[node name="PolygonSliece3" type="Polygon2D" parent="."]
+color = Color(0, 0, 0, 1)
+
+[node name="PolygonSliece4" type="Polygon2D" parent="."]
+color = Color(0, 0, 0, 1)
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_shape_exited" from="Area2D" to="." method="_on_area_2d_area_shape_exited"]
