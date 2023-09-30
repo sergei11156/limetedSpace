@@ -6,25 +6,48 @@ var poly;
 func _ready():
 	poly = Polygon2D.new()
 	var screen_size = get_viewport_rect().size
-	var xsize = screen_size.x
+	position = screen_size /2
+	
+	var verticePerUnits = 50
+	
+	var leftSide = []
+	var leftSideX = -screen_size.x/2
+	for y in range(screen_size.y/2, -screen_size.y/2, -verticePerUnits):
+		leftSide.push_back(Vector2(leftSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
+	
+	var topSide = []
+	var topSideY = -screen_size.y/2
+	for x in range(-screen_size.x/2, screen_size.x/2, verticePerUnits):
+		topSide.push_back(Vector2(x, topSideY + (randi() % verticePerUnits - verticePerUnits/2)))
+		
+	var rightSide = []
+	var rightSideX = screen_size.x/2
+	for y in range(-screen_size.y/2, screen_size.y/2, verticePerUnits):
+		rightSide.push_back(Vector2(rightSideX + (randi() % verticePerUnits - verticePerUnits/2), y))
+	
+	var bottomSide = []
+	var bottomSideY = screen_size.y/2
+	for x in range(screen_size.x/2, -screen_size.x/2, -verticePerUnits):
+		bottomSide.push_back(Vector2(x, bottomSideY + (randi() % verticePerUnits - verticePerUnits/2)))
+	
+	var allSides = leftSide + topSide + rightSide + bottomSide
+	
+	poly.set_polygon(PackedVector2Array(allSides))
+								
+								
+	
+	
 	var offset = 50;
 	
 	var vertice = Vertice.new(Vector2(-1152/2 + offset, 648/2 - offset))
 	var vPos = vertice.getPosition()
 	
 	
-	poly.set_polygon(PackedVector2Array([Vector2(-screen_size.x/2 + offset, screen_size.y/2 - offset),
-								  Vector2(-screen_size.x/2 + offset, -screen_size.y/2 + offset),
-								  Vector2(screen_size.x/2 - offset, -screen_size.y/2 + offset),
-								  Vector2(screen_size.x/2 - offset, screen_size.y/2 - offset)
-								]))
-								
-								
+	
 	
 	add_child(poly)
-	var pos = poly.get_position()
-	poly.set_position(Vector2(screen_size.x/2, screen_size.y/2))
-	pass # Replace with function body.
+	poly.set_position(Vector2(0, 0))
+	#scale = scale / 2	
 
 	
 
