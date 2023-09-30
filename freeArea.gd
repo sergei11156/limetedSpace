@@ -33,6 +33,7 @@ func _ready():
 	
 	$Polygon2D.set_polygon(PackedVector2Array(allSidesVertice))
 	$Polygon2D.set_position(Vector2(0, 0))
+	$Area2D/CollisionPolygon2D.set_position(Vector2(0, 0))
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,4 +44,15 @@ func _process(delta):
 		poligon.set(i, poligon[i] + deltaPosition);
 	
 	$Polygon2D.set_polygon(poligon)
+	$Area2D/CollisionPolygon2D.set_polygon(poligon)
 	
+
+
+
+
+func _on_area_2d_area_entered(area):
+	pass # Replace with function body.
+
+
+func _on_area_2d_area_shape_exited(area_rid, area, area_shape_index, local_shape_index):
+	pass # Replace with function body.

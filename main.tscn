@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c41mh216ishgs"]
+
+[ext_resource type="PackedScene" uid="uid://cgcyys4tghaf" path="res://freeArea.tscn" id="1_amc8x"]
+[ext_resource type="PackedScene" uid="uid://bauktxrl3uuey" path="res://player.tscn" id="2_sint0"]
+
+[node name="Main" type="Node2D"]
+
+[node name="FreeArea" parent="." instance=ExtResource("1_amc8x")]
+
+[node name="Player" parent="." instance=ExtResource("2_sint0")]
