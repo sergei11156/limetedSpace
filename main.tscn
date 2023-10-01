@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://c41mh216ishgs"]
+[gd_scene load_steps=5 format=3 uid="uid://c41mh216ishgs"]
 
 [ext_resource type="PackedScene" uid="uid://cgcyys4tghaf" path="res://freeArea.tscn" id="1_amc8x"]
 [ext_resource type="Script" path="res://main.gd" id="1_ncd3l"]
 [ext_resource type="PackedScene" uid="uid://bauktxrl3uuey" path="res://player.tscn" id="2_sint0"]
+[ext_resource type="PackedScene" uid="uid://bkm4umngv77q1" path="res://bullet.tscn" id="2_ykwac"]
 
 [node name="main" type="Node"]
 script = ExtResource("1_ncd3l")
+bulletScene = ExtResource("2_ykwac")
 
 [node name="FreeArea" parent="." instance=ExtResource("1_amc8x")]
 
@@ -20,4 +22,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[connection signal="playerHitBorder" from="Player" to="." method="_on_player_player_hit_border"]
+[connection signal="playerHitBorder" from="FreeArea" to="." method="_on_free_area_player_hit_border"]

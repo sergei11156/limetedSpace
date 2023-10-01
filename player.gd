@@ -3,7 +3,6 @@ var mousepositoion
 @export var speed = 1000
 var mouse_position = null
 
-signal playerHitBorder
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,8 +20,9 @@ func _physics_process(delta):
 		look_at(mouse_position)
 	
 
+		
+
 func startGame():
 	position = get_viewport_rect().size / 2
 
-func onAreaTouch():
-	playerHitBorder.emit()
+

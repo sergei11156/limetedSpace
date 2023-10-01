@@ -10,6 +10,8 @@ metadata/_edit_lock_ = true
 color = Color(0, 0, 0, 1)
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionSliece1" type="CollisionPolygon2D" parent="Area2D"]
 
@@ -28,8 +30,4 @@ color = Color(0, 0, 0, 1)
 [node name="PolygonSliece4" type="Polygon2D" parent="."]
 color = Color(0, 0, 0, 1)
 
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
-[connection signal="area_shape_exited" from="Area2D" to="." method="_on_area_2d_area_shape_exited"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
-[connection signal="body_shape_exited" from="Area2D" to="." method="_on_area_2d_body_shape_exited"]

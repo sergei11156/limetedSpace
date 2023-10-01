@@ -3,12 +3,16 @@ extends Node2D
 var screen_size
 var radius
 var vertices
+var verticesEffects = []
 var slices
 var collisionSlices
 @export var verticesCount = 144
+@export var effectLifetime = 1
+@export var сollapseVelocity = 100
+@export var maxEffectRadiusForCollision = 500.0
+signal playerHitBorder
 
 
-		
 func _ready():
 	screen_size = get_viewport_rect().size
 	radius = (screen_size.x if screen_size.x > screen_size.y else screen_size.y) / 2 
@@ -18,6 +22,7 @@ func _ready():
 
 
 func startGame():
+	verticesEffects = []
 	vertices = []
 	for step in range(verticesCount):
 		var verticePos = Vector2.from_angle(PI * 2 / verticesCount * step)
@@ -30,7 +35,7 @@ func startGame():
 func rand(v):
 	return v * ((randi() % 10 - 5) / 500.0 + 1)
 	
-func drawVertices(vertices: Array, slices: Array, ):
+func drawVertices(vertices: Array, slices: Array):
 	var verticesInSlice = vertices.size()/slices.size()
 	var polygonVertices = []
 	for i in vertices.size() + 1:
@@ -57,6 +62,8 @@ func _physics_process(delta):
 	vertices = vertices.map(func(v): return updateVertice(v, delta))
 	drawVertices(vertices, slices)
 	drawVertices(vertices, collisionSlices)
+	updateEffectsLifetime(delta)	
+	
 	#var poligon = $Polygon2D.get_polygon();
 	#for i in poligon.size():
 	#	
@@ -65,11 +72,43 @@ func _physics_process(delta):
 	#$Area2D/CollisionPolygon2D.set_polygon(poligon)
 	
 
-func updateVertice(v, delta):
-	var deltaPosition = -v.normalized() * v.length() * 0.05 * delta;
-	return v + deltaPosition * (1 + (randi() % 10)/100)
+func updateEffectsLifetime(delta):
+	var newEffects = []
+	for effect in verticesEffects:
+		effect["lifetime"] -= delta
+		if effect["lifetime"] > 0:
+			newEffects.push_back(effect)
+	verticesEffects = newEffects
 
+
+func updateVertice(v, delta):
+	var deltaPosition = -v.normalized() * delta * сollapseVelocity;
+	var newVerticePosition = v + deltaPosition
+	newVerticePosition = applyEffects(newVerticePosition, delta)
+	return newVerticePosition
+
+func applyEffects(vertice, delta):
+	for effect in verticesEffects:
+		var effectRadius = effect["radius"] * (effect["lifetime"] / effectLifetime)
+		var distanceBeetwen = (effect["position"] - vertice).length()
+		if distanceBeetwen < effectRadius:
+			vertice += distanceBeetwen/effectRadius * effect["impulse"] * vertice.normalized() * delta
+	return vertice
 
 func _on_area_2d_body_entered(body):
-	body.onAreaTouch()
-	pass # Replace with function body.
+	if body.name == "Player":
+		playerHitBorder.emit()
+	else:
+		onBulletHitBorder(body)
+
+
+func onBulletHitBorder(body):
+	verticesEffects.push_back({
+		"position": body.position - screen_size/2,
+		"impulse": body.velocity.length() / 10,
+		"lifetime": effectLifetime,
+		"radius": maxEffectRadiusForCollision
+	})
+	body.queue_free()
+	pass
+	
