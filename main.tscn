@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://c41mh216ishgs"]
+[gd_scene load_steps=6 format=3 uid="uid://c41mh216ishgs"]
 
 [ext_resource type="PackedScene" uid="uid://cgcyys4tghaf" path="res://freeArea.tscn" id="1_amc8x"]
 [ext_resource type="Script" path="res://main.gd" id="1_ncd3l"]
 [ext_resource type="PackedScene" uid="uid://bauktxrl3uuey" path="res://player.tscn" id="2_sint0"]
 [ext_resource type="PackedScene" uid="uid://bkm4umngv77q1" path="res://bullet.tscn" id="2_ykwac"]
+[ext_resource type="PackedScene" uid="uid://bhgqb4ldw40cp" path="res://bonus.tscn" id="3_m6w2k"]
 
 [node name="main" type="Node"]
 script = ExtResource("1_ncd3l")
 bulletScene = ExtResource("2_ykwac")
+bonusScene = ExtResource("3_m6w2k")
 
 [node name="FreeArea" parent="." instance=ExtResource("1_amc8x")]
 
@@ -47,4 +49,10 @@ offset_right = 225.0
 offset_bottom = 130.0
 color = Color(0, 0, 0, 1)
 
+[node name="CreateBonusTimer" type="Timer" parent="."]
+wait_time = 7.0
+autostart = true
+
 [connection signal="playerHitBorder" from="FreeArea" to="." method="_on_free_area_player_hit_border"]
+[connection signal="make6Shot" from="Player" to="." method="_on_player_make_6_shot"]
+[connection signal="timeout" from="CreateBonusTimer" to="." method="_on_create_bonus_timer_timeout"]

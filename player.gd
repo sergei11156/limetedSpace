@@ -8,7 +8,8 @@ var availableShots = 0
 var maxShots = 3
 var shotProgress
 @export var maxDistanceToRadiusToGainReload = 200
-# Called when the node enters the scene tree for the first time.
+
+signal make6Shot
 func _ready():
 	var vertices = []
 	for step in range(20):
@@ -60,5 +61,9 @@ func shotsFired():
 func startGame():
 	position = get_viewport_rect().size / 2
 	waitReloadTime = 0
+	availableShots = 0
+
+func makeSixShot():
+	make6Shot.emit()
 
 

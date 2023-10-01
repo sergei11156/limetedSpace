@@ -1,14 +1,19 @@
-extends RigidBody2D
+extends Area2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
-func drawDanger(vertices: Array, radius):
-	polygonVertices.push_back(vertice.normalized() * radius * 4)
-	
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+
+
+
+func _on_body_entered(body):
+	if body.name == "Player":
+		body.makeSixShot()
+	queue_free()
