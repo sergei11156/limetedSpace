@@ -7,7 +7,7 @@ var waitReloadTime = 0
 var availableShots = 0
 var maxShots = 3
 var shotProgress
-@export var maxDistanceToRadiusToGainReload = 200
+@export var maxDistanceToRadiusToGainReload = 300
 
 signal make6Shot
 func _ready():

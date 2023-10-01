@@ -6,7 +6,7 @@ var vertices
 var verticesEffects: Array[Effect] = []
 var slices
 var collisionSlices
-@export var verticesCount = 144
+@export var verticesCount = 120
 @export var effectLifetime = 1
 @export var сollapseVelocity = 100
 @export var maxEffectRadiusForCollision = 200.0

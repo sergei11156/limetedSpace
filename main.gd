@@ -1,32 +1,19 @@
 extends Node
 @export var bulletScene: PackedScene
 @export var bonusScene: PackedScene
-
-var loadIndicators = []
-
+@export var colors: Array[Color]
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$FreeArea.startGame()
-	loadIndicators = [$ColorRect2, $ColorRect3, $ColorRect4]
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input.is_action_just_pressed("shot"):
-		if $Player.is_shot_available():
-			makeShot($Player.position, $Player.rotation)
-			$Player.shotsFired()
-			
+	if $Player.is_shot_available():
+		makeShot($Player.position, $Player.rotation)
+		$Player.shotsFired()
 	
-	for i in range($Player.availableShots):
-		loadIndicators[i].set_color(Color(1, 1, 1))
-	
-	if $Player.availableShots < loadIndicators.size():
-		var color = $Player.shotProgress
-		loadIndicators[$Player.availableShots].set_color(Color(color, color, color))
-		for i in range($Player.availableShots + 1, loadIndicators.size()):
-			loadIndicators[i].set_color(Color(0, 0, 0))
-			
 func makeShot(pos, rot):
 	var bullet = bulletScene.instantiate()
 	bullet.shotAt(pos, rot)
@@ -34,31 +21,39 @@ func makeShot(pos, rot):
 
 func _physics_process(delta):
 	$Player.updateReloadTime(delta, $FreeArea.averageRadius, $FreeArea.center)
-	var vertices = []
-	for step in range(40):
-		var verticePos = Vector2.from_angle(PI * 2 / 40 * step)
-		verticePos *= $FreeArea.averageRadius - $Player.maxDistanceToRadiusToGainReload
-		vertices.push_back(rand(verticePos))
+	var vertices = $FreeArea.vertices.map(func(v): return v - v.normalized() * $Player.maxDistanceToRadiusToGainReload / 2)
+	var alpha = $Player.waitReloadTime/ $Player.reloadTime
+	if alpha < .25:
+		alpha = .25
+	$ZoneIndicator.set_color(Color($ZoneIndicator.color, alpha))
 	
 	$WithoutReloadZone.position = $FreeArea.center
 	$WithoutReloadZone.set_polygon(PackedVector2Array(vertices))
 
 func rand(v):
 	return v * ((randi() % 10 - 5) / 1000.0 + 1)
-	
-func _on_free_area_player_hit_border():
+
+
+func startGame():
 	$FreeArea.startGame()
 	$Player.startGame()
+	$ZoneIndicator.set_color(colors[randi() % colors.size()])
+
+func _on_free_area_player_hit_border():
+	startGame()
 	
 
 
 func _on_create_bonus_timer_timeout():
 	var bonus = bonusScene.instantiate()
-	var rand = randi() % int($FreeArea.averageRadius - $Player.maxDistanceToRadiusToGainReload) 
-	var v = Vector2(rand, rand)
+	var radius = $FreeArea.averageRadius - $Player.maxDistanceToRadiusToGainReload 
+	var v = rand_circle(radius)
 	bonus.position = $FreeArea.center + v
 	add_child(bonus)
 	
+
+func rand_circle(radius):
+	return Vector2(radius * randf(), 0).rotated(randf() * 2 * PI)
 
 
 func _on_player_make_6_shot():
