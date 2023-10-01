@@ -5,33 +5,28 @@ var radius
 var vertices
 var slices
 var collisionSlices
+@export var verticesCount = 144
 
-# Called when the node enters the scene tree for the first time.
+
+		
 func _ready():
 	screen_size = get_viewport_rect().size
 	radius = (screen_size.x if screen_size.x > screen_size.y else screen_size.y) / 2 
-	
 	position = screen_size /2
-	
-	var verticesCount = 144
-	var randomOffset = 0.05 * radius
+	slices = [$PolygonSliece1, $PolygonSliece2, $PolygonSliece3, $PolygonSliece4]
+	collisionSlices = [$Area2D/CollisionSliece1, $Area2D/CollisionSliece2, $Area2D/CollisionSliece3, $Area2D/CollisionSliece4]
+
+
+func startGame():
 	vertices = []
-	
 	for step in range(verticesCount):
 		var verticePos = Vector2.from_angle(PI * 2 / verticesCount * step)
 		verticePos *= radius
 		vertices.push_back(verticePos)
 	
-	
-	slices = [$PolygonSliece1, $PolygonSliece2, $PolygonSliece3, $PolygonSliece4]
-	collisionSlices = [$Area2D/CollisionSliece1, $Area2D/CollisionSliece2, $Area2D/CollisionSliece3, $Area2D/CollisionSliece4]
-	#print(vertices)
+	drawVertices(vertices, slices)
+	drawVertices(vertices, collisionSlices)
 
-	var randVertices = vertices.map(rand)
-	
-	drawVertices(randVertices, slices)
-	drawVertices(randVertices, collisionSlices)
-	
 func rand(v):
 	return v * ((randi() % 10 - 5) / 500.0 + 1)
 	
@@ -76,5 +71,5 @@ func updateVertice(v, delta):
 
 
 func _on_area_2d_body_entered(body):
-	print(body)
+	body.onAreaTouch()
 	pass # Replace with function body.
