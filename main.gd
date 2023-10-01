@@ -18,7 +18,7 @@ func makeShot(pos, rot):
 	$ShotFired.play()
 	var bullet = bulletScene.instantiate()
 	bullet.shotAt(pos, rot)
-	add_child(bullet)
+	call_deferred("add_child", bullet)
 
 
 func rand(v):

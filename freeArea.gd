@@ -36,8 +36,6 @@ func startGame():
 		verticePos *= radius
 		vertices.push_back(verticePos)
 	
-	drawVertices(vertices, slices)
-	drawVertices(vertices, collisionSlices)
 
 func rand(v):
 	return v * ((randi() % 10 - 5) / 1000.0 + 1)
