@@ -58,38 +58,23 @@ func drawVertices(vertices: Array, slices: Array, ):
 		polygonVertices.push_back(Vector2(vertice))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	var randVertices = vertices.map(rand)
-	drawVertices(randVertices, slices)
-	drawVertices(randVertices, collisionSlices)
+func _physics_process(delta):
+	vertices = vertices.map(func(v): return updateVertice(v, delta))
+	drawVertices(vertices, slices)
+	drawVertices(vertices, collisionSlices)
 	#var poligon = $Polygon2D.get_polygon();
 	#for i in poligon.size():
-	#	var deltaPosition = -poligon[i].normalized() * poligon[i].length() * 0.05 * delta;
-	#	poligon.set(i, poligon[i] + deltaPosition * (1 + (randi() % 10)/100));
+	#	
 	
 	#$Polygon2D.set_polygon(poligon)
 	#$Area2D/CollisionPolygon2D.set_polygon(poligon)
 	
 
-
-
-
-func _on_area_2d_area_entered(area):
-	pass # Replace with function body.
-
-
-func _on_area_2d_area_shape_exited(area_rid, area, area_shape_index, local_shape_index):
-	pass # Replace with function body.
+func updateVertice(v, delta):
+	var deltaPosition = -v.normalized() * v.length() * 0.05 * delta;
+	return v + deltaPosition * (1 + (randi() % 10)/100)
 
 
 func _on_area_2d_body_entered(body):
 	print(body)
-	pass # Replace with function body.
-
-
-func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	pass # Replace with function body.
-
-
-func _on_area_2d_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	pass # Replace with function body.

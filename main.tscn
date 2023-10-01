@@ -3,8 +3,17 @@
 [ext_resource type="PackedScene" uid="uid://cgcyys4tghaf" path="res://freeArea.tscn" id="1_amc8x"]
 [ext_resource type="PackedScene" uid="uid://bauktxrl3uuey" path="res://player.tscn" id="2_sint0"]
 
-[node name="Main" type="Node2D"]
+[node name="main" type="Node"]
 
 [node name="FreeArea" parent="." instance=ExtResource("1_amc8x")]
 
 [node name="Player" parent="." instance=ExtResource("2_sint0")]
+position = Vector2(1400, 800)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
