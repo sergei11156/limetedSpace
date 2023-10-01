@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bkm4umngv77q1"]
 
-[ext_resource type="Texture2D" uid="uid://cypif4l37ffff" path="res://icon.svg" id="1_kxd3n"]
 [ext_resource type="Script" path="res://bullet.gd" id="1_tim8k"]
+[ext_resource type="Texture2D" uid="uid://dknui6y2pmete" path="res://player.svg" id="2_l5d05"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhu0e"]
 radius = 30.1496
@@ -10,7 +10,7 @@ radius = 30.1496
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_kxd3n")
+"texture": ExtResource("2_l5d05")
 }],
 "loop": true,
 "name": &"default",
@@ -26,6 +26,6 @@ script = ExtResource("1_tim8k")
 shape = SubResource("CircleShape2D_qhu0e")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-4.76837e-07, 0)
-scale = Vector2(0.367188, 0.390625)
+position = Vector2(-2.14577e-06, 0)
+scale = Vector2(0.789474, 0.783874)
 sprite_frames = SubResource("SpriteFrames_67f6s")

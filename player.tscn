@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://bauktxrl3uuey"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_etvuo"]
-[ext_resource type="Texture2D" uid="uid://cypif4l37ffff" path="res://icon.svg" id="1_ywkfs"]
+[ext_resource type="Texture2D" uid="uid://dknui6y2pmete" path="res://player.svg" id="2_lbmrg"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_b324m"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_5lxd3"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_ywkfs")
+"texture": ExtResource("2_lbmrg")
 }],
 "loop": true,
 "name": &"default",
@@ -22,7 +22,9 @@ platform_wall_layers = 1
 script = ExtResource("1_etvuo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_b324m")
+position = Vector2(-0.500001, 0.5)
+scale = Vector2(1.75, 1.75)
+sprite_frames = SubResource("SpriteFrames_5lxd3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_63p0h")

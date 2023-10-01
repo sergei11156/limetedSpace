@@ -3,7 +3,7 @@ extends Node2D
 var screen_size
 var radius
 var vertices
-var verticesEffects = []
+var verticesEffects: Array[Effect] = []
 var slices
 var collisionSlices
 @export var verticesCount = 200
@@ -78,10 +78,10 @@ func calcuclateAverageRaidius():
 	
 
 func updateEffectsLifetime(delta):
-	var newEffects = []
+	var newEffects: Array[Effect] = []
 	for effect in verticesEffects:
-		effect["lifetime"] -= delta
-		if effect["lifetime"] > 0:
+		effect.lifetime -= delta
+		if effect.lifetime > 0:
 			newEffects.push_back(effect)
 	verticesEffects = newEffects
 
@@ -89,17 +89,17 @@ func updateEffectsLifetime(delta):
 func updateVertice(v, delta):
 	var vectorBetweenAbgRadiusPosition = v.normalized() * averageRadius - v
 	
-	var deltaPosition = vectorBetweenAbgRadiusPosition * delta * toAvgRadiusPower * vectorBetweenAbgRadiusPosition.length() ** 2
+	var deltaPosition = vectorBetweenAbgRadiusPosition * delta ##* toAvgRadiusPower * vectorBetweenAbgRadiusPosition.length() ** 2
 	var newVerticePosition = v + deltaPosition
 	newVerticePosition = applyEffects(newVerticePosition, delta)
 	return newVerticePosition
 
 func applyEffects(vertice, delta):
 	for effect in verticesEffects:
-		var effectRadius = effect["radius"] / (effect["lifetime"] / effectLifetime)
-		var distanceBeetwen = (effect["position"] - vertice).length()
+		var effectRadius = effect.radius / (effect.lifetime / effectLifetime)
+		var distanceBeetwen = (effect.position - vertice).length()
 		if distanceBeetwen < effectRadius:
-			vertice += distanceBeetwen/effectRadius * effect["impulse"] * vertice.normalized() * delta
+			vertice += distanceBeetwen/effectRadius * effect.impulse * vertice.normalized() * delta
 	return vertice
 
 func _on_area_2d_body_entered(body):
@@ -110,21 +110,21 @@ func _on_area_2d_body_entered(body):
 
 
 func onBulletHitBorder(body):
-	verticesEffects.push_back({
-		"position": body.position - screen_size/2,
-		"impulse": body.velocity.length() * impulseModifier,
-		"lifetime": effectLifetime,
-		"radius": maxEffectRadiusForCollision
-	})
+	var effect = Effect.new()
+	effect.position = body.position - screen_size/2
+	effect.impulse = body.velocity.length() * impulseModifier
+	effect.lifetime = effectLifetime
+	effect.radius = maxEffectRadiusForCollision
+	verticesEffects.push_back(effect)
 	body.queue_free()
-	pass
 	
 
 
 func _on_effect_spawner_timeout():
-	verticesEffects.push_back({
-		"position": Vector2(averageRadius, averageRadius).rotated(PI * 2 * (randi() % 100 + 1)/ 100),
-		"impulse": -200,
-		"lifetime": effectLifetime,
-		"radius": maxEffectRadiusForCollision
-	})
+	var effect = Effect.new()
+	effect.position = Vector2(averageRadius, averageRadius).rotated(PI * 2 * (randi() % 100 + 1)/ 100)
+	effect.impulse = -500 * (averageRadius / radius)
+	effect.lifetime = effectLifetime
+	effect.radius = maxEffectRadiusForCollision
+	verticesEffects.push_back(effect)
+	
