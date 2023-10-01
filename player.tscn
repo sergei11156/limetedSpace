@@ -1,18 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://bauktxrl3uuey"]
+[gd_scene load_steps=3 format=3 uid="uid://bauktxrl3uuey"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_etvuo"]
-[ext_resource type="Texture2D" uid="uid://dknui6y2pmete" path="res://player.svg" id="2_lbmrg"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_5lxd3"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_lbmrg")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_63p0h"]
 radius = 67.0075
@@ -21,10 +9,9 @@ radius = 67.0075
 platform_wall_layers = 1
 script = ExtResource("1_etvuo")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-0.500001, 0.5)
-scale = Vector2(1.75, 1.75)
-sprite_frames = SubResource("SpriteFrames_5lxd3")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_63p0h")
+
+[node name="PlayerPolygon" type="Polygon2D" parent="."]
+color = Color(0.529412, 0.529412, 0.529412, 1)
+polygon = PackedVector2Array(-67, 0, -65, -18, -56, -37, -45, -49, -33, -58, -22, -63, -14, -66, -1, -67, 16, -65, 28, -61, 38, -55, 49, -45, 59, -32, 64, -18, 66, -7, 66, 7, 64, 21, 54, 41, 45, 49, 32, 60, 16, 66, 4, 67, -7, 67, -22, 63, -33, 59, -43, 51, -55, 39, -61, 29, -65, 19)

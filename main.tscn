@@ -11,15 +11,40 @@ bulletScene = ExtResource("2_ykwac")
 
 [node name="FreeArea" parent="." instance=ExtResource("1_amc8x")]
 
+[node name="WithoutReloadZone" type="Polygon2D" parent="."]
+z_index = -1
+
 [node name="Player" parent="." instance=ExtResource("2_sint0")]
 position = Vector2(1400, 800)
 
 [node name="ColorRect" type="ColorRect" parent="."]
-z_index = -1
+z_index = -2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.976471, 0.976471, 0.976471, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_left = 64.0
+offset_top = 18.0
+offset_right = 97.0
+offset_bottom = 129.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+offset_left = 127.0
+offset_top = 17.0
+offset_right = 158.0
+offset_bottom = 129.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+offset_left = 192.0
+offset_top = 17.0
+offset_right = 225.0
+offset_bottom = 130.0
+color = Color(0, 0, 0, 1)
 
 [connection signal="playerHitBorder" from="FreeArea" to="." method="_on_free_area_player_hit_border"]
