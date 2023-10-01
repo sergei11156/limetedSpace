@@ -10,6 +10,8 @@ var shotProgress
 @export var maxDistanceToRadiusToGainReload = 300
 
 signal make6Shot
+signal makeShot
+
 func _ready():
 	var vertices = []
 	for step in range(20):
@@ -43,11 +45,7 @@ func _physics_process(delta):
 	
 	
 	shotProgress = waitReloadTime / reloadTime
-	
-	var max_color = .5
-	var color_value = max_color - (1 if shotProgress > 1 else shotProgress) * max_color
-	$PlayerPolygon.set_color(Color(color_value, color_value, color_value))
-	
+
 	move_and_slide()
 	look_at(mouse_position)
 
@@ -65,5 +63,8 @@ func startGame():
 
 func makeSixShot():
 	make6Shot.emit()
+
+func makeOneShot():
+	makeShot.emit()
 
 

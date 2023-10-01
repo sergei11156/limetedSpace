@@ -14,5 +14,5 @@ script = ExtResource("1_etvuo")
 shape = SubResource("CircleShape2D_63p0h")
 
 [node name="PlayerPolygon" type="Polygon2D" parent="."]
-color = Color(0.529412, 0.529412, 0.529412, 1)
+color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-67, 0, -65, -18, -56, -37, -45, -49, -33, -58, -22, -63, -14, -66, -1, -67, 16, -65, 28, -61, 38, -55, 49, -45, 59, -32, 64, -18, 66, -7, 66, 7, 64, 21, 54, 41, 45, 49, 32, 60, 16, 66, 4, 67, -7, 67, -22, 63, -33, 59, -43, 51, -55, 39, -61, 29, -65, 19)

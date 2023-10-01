@@ -1,16 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://c41mh216ishgs"]
+[gd_scene load_steps=7 format=3 uid="uid://c41mh216ishgs"]
 
 [ext_resource type="PackedScene" uid="uid://cgcyys4tghaf" path="res://freeArea.tscn" id="1_amc8x"]
 [ext_resource type="Script" path="res://main.gd" id="1_ncd3l"]
 [ext_resource type="PackedScene" uid="uid://bauktxrl3uuey" path="res://player.tscn" id="2_sint0"]
 [ext_resource type="PackedScene" uid="uid://bkm4umngv77q1" path="res://bullet.tscn" id="2_ykwac"]
 [ext_resource type="PackedScene" uid="uid://bhgqb4ldw40cp" path="res://bonus.tscn" id="3_m6w2k"]
+[ext_resource type="PackedScene" uid="uid://yhmgyrp7fef2" path="res://ammo.tscn" id="4_fc1b6"]
 
 [node name="main" type="Node"]
 script = ExtResource("1_ncd3l")
 bulletScene = ExtResource("2_ykwac")
 bonusScene = ExtResource("3_m6w2k")
-colors = Array[Color]([Color(0, 0.745098, 0, 1), Color(0.572549, 0.596078, 0, 1), Color(0, 0, 0.890196, 1), Color(0.678431, 0.360784, 0.709804, 1)])
+ammoScene = ExtResource("4_fc1b6")
+colors = Array[Color]([Color(0, 0.745098, 0, 1), Color(0.572549, 0.596078, 0, 1), Color(0, 0, 0.890196, 1), Color(0.678431, 0.360784, 0.709804, 1), Color(0.972549, 0.560784, 0.337255, 1)])
 
 [node name="FreeArea" parent="." instance=ExtResource("1_amc8x")]
 
@@ -30,7 +32,7 @@ grow_vertical = 2
 color = Color(0, 0.847059, 0, 0.172549)
 
 [node name="CreateBonusTimer" type="Timer" parent="."]
-wait_time = 7.0
+wait_time = 5.0
 
 [node name="Background" type="ColorRect" parent="."]
 z_index = -4
@@ -40,6 +42,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="CreateAmmunition" type="Timer" parent="."]
+
 [connection signal="playerHitBorder" from="FreeArea" to="." method="_on_free_area_player_hit_border"]
 [connection signal="make6Shot" from="Player" to="." method="_on_player_make_6_shot"]
+[connection signal="makeShot" from="Player" to="." method="_on_player_make_shot"]
 [connection signal="timeout" from="CreateBonusTimer" to="." method="_on_create_bonus_timer_timeout"]
+[connection signal="timeout" from="CreateAmmunition" to="." method="_on_create_ammunition_timeout"]

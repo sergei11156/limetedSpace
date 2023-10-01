@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://yhmgyrp7fef2"]
+
+[ext_resource type="Script" path="res://ammo.gd" id="1_q20kx"]
+[ext_resource type="Texture2D" uid="uid://dkt2auop2avh4" path="res://ammo.svg" id="2_b7gd8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_68681"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_b7gd8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_js3iw"]
+radius = 38.0132
+
+[node name="Ammo" type="Area2D"]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_q20kx")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_68681")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_js3iw")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
