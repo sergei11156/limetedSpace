@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c41mh216ishgs"]
+[gd_scene load_steps=9 format=3 uid="uid://c41mh216ishgs"]
 
 [ext_resource type="PackedScene" uid="uid://cgcyys4tghaf" path="res://freeArea.tscn" id="1_amc8x"]
 [ext_resource type="Script" path="res://main.gd" id="1_ncd3l"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bkm4umngv77q1" path="res://bullet.tscn" id="2_ykwac"]
 [ext_resource type="PackedScene" uid="uid://bhgqb4ldw40cp" path="res://bonus.tscn" id="3_m6w2k"]
 [ext_resource type="PackedScene" uid="uid://yhmgyrp7fef2" path="res://ammo.tscn" id="4_fc1b6"]
+[ext_resource type="AudioStream" uid="uid://dryfrewels20m" path="res://shot.mp3" id="7_wb1yj"]
+[ext_resource type="AudioStream" uid="uid://bd4ny24u1ppo8" path="res://tish.mp3" id="8_ml24d"]
 
 [node name="main" type="Node"]
 script = ExtResource("1_ncd3l")
@@ -16,20 +18,8 @@ colors = Array[Color]([Color(0, 0.745098, 0, 1), Color(0.572549, 0.596078, 0, 1)
 
 [node name="FreeArea" parent="." instance=ExtResource("1_amc8x")]
 
-[node name="WithoutReloadZone" type="Polygon2D" parent="."]
-z_index = -1
-
 [node name="Player" parent="." instance=ExtResource("2_sint0")]
 position = Vector2(1400, 800)
-
-[node name="ZoneIndicator" type="ColorRect" parent="."]
-z_index = -3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0.847059, 0, 0.172549)
 
 [node name="CreateBonusTimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -44,6 +34,15 @@ grow_vertical = 2
 
 [node name="CreateAmmunition" type="Timer" parent="."]
 
+[node name="ShotFired" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_wb1yj")
+volume_db = -19.901
+
+[node name="BorderTouched" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_ml24d")
+volume_db = -20.0
+
+[connection signal="bulletHitBorder" from="FreeArea" to="." method="_on_free_area_bullet_hit_border"]
 [connection signal="playerHitBorder" from="FreeArea" to="." method="_on_free_area_player_hit_border"]
 [connection signal="make6Shot" from="Player" to="." method="_on_player_make_6_shot"]
 [connection signal="makeShot" from="Player" to="." method="_on_player_make_shot"]

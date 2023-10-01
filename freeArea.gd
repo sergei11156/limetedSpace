@@ -16,7 +16,7 @@ var averageRadius
 var center
 
 signal playerHitBorder
-
+signal bulletHitBorder
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -119,6 +119,7 @@ func onBulletHitBorder(body):
 	effect.radius = maxEffectRadiusForCollision
 	verticesEffects.push_back(effect)
 	body.queue_free()
+	bulletHitBorder.emit()
 	
 
 

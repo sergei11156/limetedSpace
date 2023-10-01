@@ -15,22 +15,11 @@ func _ready():
 	startGame()
 	
 func makeShot(pos, rot):
+	$ShotFired.play()
 	var bullet = bulletScene.instantiate()
 	bullet.shotAt(pos, rot)
 	add_child(bullet)
 
-func _physics_process(delta):
-	$Player.updateReloadTime(delta, $FreeArea.averageRadius, $FreeArea.center)
-	var vertices = $FreeArea.vertices.map(func(v): return v - v.normalized() * $Player.maxDistanceToRadiusToGainReload / 2)
-	var processReload = $Player.waitReloadTime / $Player.reloadTime
-	colorAlphaVelocity = processReload - colorAlpha
-	colorAlpha += colorAlphaVelocity * delta
-	if colorAlpha < .25:
-		colorAlpha = .25
-	$ZoneIndicator.set_color(Color($ZoneIndicator.color, colorAlpha))
-	
-	$WithoutReloadZone.position = $FreeArea.center
-	$WithoutReloadZone.set_polygon(PackedVector2Array(vertices))
 
 func rand(v):
 	return v * ((randi() % 10 - 5) / 1000.0 + 1)
@@ -39,8 +28,6 @@ func rand(v):
 func startGame():
 	$FreeArea.startGame()
 	$Player.startGame()
-	$ZoneIndicator.set_color(colors[randi() % colors.size()])
-	colorAlpha = .25
 	$CreateBonusTimer.start()
 	$CreateAmmunition.start()
 	for bonuse in bonuses:
@@ -84,3 +71,7 @@ func _on_create_ammunition_timeout():
 func _on_player_make_shot():
 	makeShot($Player.position, $Player.rotation)
 	$Player.shotsFired()
+
+
+func _on_free_area_bullet_hit_border():
+	$BorderTouched.play()
