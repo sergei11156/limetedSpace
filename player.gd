@@ -22,7 +22,7 @@ func _ready():
 
 func updateReloadTime(delta, avgRadius, center):
 		var len = abs((position - center).length() - avgRadius)
-		if len < maxDistanceToRadiusToGainReload:
+		if len < maxDistanceToRadiusToGainReload and velocity.length() > 0:
 			waitReloadTime += delta * len / maxDistanceToRadiusToGainReload		
 	
 func _physics_process(delta):

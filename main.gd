@@ -2,6 +2,11 @@ extends Node
 @export var bulletScene: PackedScene
 @export var bonusScene: PackedScene
 @export var colors: Array[Color]
+
+var colorAlphaVelocity = 0
+var colorAlpha = .25
+
+var bonuses = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$FreeArea.startGame()
@@ -22,10 +27,12 @@ func makeShot(pos, rot):
 func _physics_process(delta):
 	$Player.updateReloadTime(delta, $FreeArea.averageRadius, $FreeArea.center)
 	var vertices = $FreeArea.vertices.map(func(v): return v - v.normalized() * $Player.maxDistanceToRadiusToGainReload / 2)
-	var alpha = $Player.waitReloadTime/ $Player.reloadTime
-	if alpha < .25:
-		alpha = .25
-	$ZoneIndicator.set_color(Color($ZoneIndicator.color, alpha))
+	var processReload = $Player.waitReloadTime / $Player.reloadTime
+	colorAlphaVelocity = processReload - colorAlpha
+	colorAlpha += colorAlphaVelocity * delta
+	if colorAlpha < .25:
+		colorAlpha = .25
+	$ZoneIndicator.set_color(Color($ZoneIndicator.color, colorAlpha))
 	
 	$WithoutReloadZone.position = $FreeArea.center
 	$WithoutReloadZone.set_polygon(PackedVector2Array(vertices))
@@ -38,6 +45,13 @@ func startGame():
 	$FreeArea.startGame()
 	$Player.startGame()
 	$ZoneIndicator.set_color(colors[randi() % colors.size()])
+	colorAlpha = .25
+	$CreateBonusTimer.start()
+	for bonuse in bonuses:
+		if bonuse:
+			bonuse.queue_free()
+	bonuses = []
+	
 
 func _on_free_area_player_hit_border():
 	startGame()
@@ -50,6 +64,7 @@ func _on_create_bonus_timer_timeout():
 	var v = rand_circle(radius)
 	bonus.position = $FreeArea.center + v
 	add_child(bonus)
+	bonuses.push_back(bonus)
 	
 
 func rand_circle(radius):

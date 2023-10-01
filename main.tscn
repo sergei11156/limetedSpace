@@ -31,7 +31,6 @@ color = Color(0, 0.847059, 0, 0.172549)
 
 [node name="CreateBonusTimer" type="Timer" parent="."]
 wait_time = 7.0
-autostart = true
 
 [node name="Background" type="ColorRect" parent="."]
 z_index = -4
