@@ -36,12 +36,11 @@ func startGame():
 		verticePos *= radius
 		vertices.push_back(verticePos)
 	
-	
 	drawVertices(vertices, slices)
 	drawVertices(vertices, collisionSlices)
 
 func rand(v):
-	return v * ((randi() % 10 - 5) / 500.0 + 1)
+	return v * ((randi() % 10 - 5) / 1000.0 + 1)
 	
 func drawVertices(vertices: Array, slices: Array):
 	var verticesInSlice = vertices.size()/slices.size()
@@ -69,7 +68,9 @@ func drawVertices(vertices: Array, slices: Array):
 func _physics_process(delta):
 	averageRadius = calcuclateAverageRaidius()
 	vertices = vertices.map(func(v): return updateVertice(v, delta))
-	drawVertices(vertices, slices)
+	
+	var randVertices = vertices.map(rand)	
+	drawVertices(randVertices, slices)
 	drawVertices(vertices, collisionSlices)
 	updateEffectsLifetime(delta)	
 	

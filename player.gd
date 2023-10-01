@@ -10,6 +10,13 @@ var shotProgress
 @export var maxDistanceToRadiusToGainReload = 200
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var vertices = []
+	for step in range(20):
+		var verticePos = Vector2.from_angle(PI * 2 / 20 * step)
+		verticePos *= 65
+		vertices.push_back(verticePos)
+	
+	$PlayerPolygon.set_polygon(PackedVector2Array(vertices))
 	startGame()
 
 func updateReloadTime(delta, avgRadius, center):
@@ -39,10 +46,9 @@ func _physics_process(delta):
 	var max_color = .5
 	var color_value = max_color - (1 if shotProgress > 1 else shotProgress) * max_color
 	$PlayerPolygon.set_color(Color(color_value, color_value, color_value))
-		
+	
 	move_and_slide()
 	look_at(mouse_position)
-	
 
 		
 func is_shot_available():

@@ -34,10 +34,13 @@ func _physics_process(delta):
 	for step in range(40):
 		var verticePos = Vector2.from_angle(PI * 2 / 40 * step)
 		verticePos *= $FreeArea.averageRadius - $Player.maxDistanceToRadiusToGainReload
-		vertices.push_back(verticePos)
+		vertices.push_back(rand(verticePos))
 	
 	$WithoutReloadZone.position = $FreeArea.center
 	$WithoutReloadZone.set_polygon(PackedVector2Array(vertices))
+
+func rand(v):
+	return v * ((randi() % 10 - 5) / 1000.0 + 1)
 	
 func _on_free_area_player_hit_border():
 	$FreeArea.startGame()
